@@ -102,8 +102,7 @@ class _Function2PageState extends State<Function2Page> {
         .then((value) {});
   }
 
-  Future getImage() async {
-    // final pickedFile = await picker.getImage(source: ImageSource.camera);
+  Future getImageGallery() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
@@ -115,8 +114,19 @@ class _Function2PageState extends State<Function2Page> {
     _predict();
   }
 
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+      _imageWidget = Image.file(_image!);
+    });
+
+    // dự đoán
+    _predict();
+  }
+
   void _predict() async {
-    print('dang du doan');
     var temp = await Tflite.runModelOnImage(
         path: _image!.path, // required
         imageMean: 127.5, // defaults to 117.0
@@ -133,10 +143,6 @@ class _Function2PageState extends State<Function2Page> {
         index = recognitions[0]['index'];
       }
     });
-
-    print('phuong ${recognitions}');
-    print('phuong ${index}');
-    print('phuong ${bananaResults[index]}');
   }
 
   @override
@@ -146,6 +152,17 @@ class _Function2PageState extends State<Function2Page> {
         title:
             Text('Phân Tích Thành Phần', style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.image,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              getImageGallery();
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -161,7 +178,7 @@ class _Function2PageState extends State<Function2Page> {
                           constraints: BoxConstraints(
                               // minHeight: MediaQuery.of(context).size.height / 3,
                               maxHeight:
-                                  MediaQuery.of(context).size.height / 2),
+                                  MediaQuery.of(context).size.height / 3),
                           decoration: BoxDecoration(
                             border: Border.all(),
                           ),
@@ -200,7 +217,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[0],
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -229,7 +246,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[1] + '%',
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -258,7 +275,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[2] + '%',
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -287,7 +304,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[3] + '%',
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -316,7 +333,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[4] + '%',
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -345,7 +362,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[5],
                                   maxLines: 4,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -383,7 +400,7 @@ class _Function2PageState extends State<Function2Page> {
                                   bananaResults[index].split(';')[6],
                                   maxLines: 6,
                                   overflow: TextOverflow.ellipsis,
-                                  textDirection: TextDirection.rtl,
+                                  textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 16,

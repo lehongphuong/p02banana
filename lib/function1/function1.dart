@@ -74,9 +74,20 @@ class _Function1PageState extends State<Function1Page> {
         .then((value) {});
   }
 
+  Future getImageGallery() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(pickedFile!.path);
+      _imageWidget = Image.file(_image!);
+    });
+
+    // dự đoán
+    _predict();
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
-    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -104,9 +115,6 @@ class _Function1PageState extends State<Function1Page> {
         index = recognitions[0]['index'];
       }
     });
-
-    print('phuong ${recognitions}');
-    print('phuong ${index}');
   }
 
   @override
@@ -115,6 +123,17 @@ class _Function1PageState extends State<Function1Page> {
       appBar: AppBar(
         title: Text('Phân Loại Chuối', style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.image,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              getImageGallery();
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -125,12 +144,12 @@ class _Function1PageState extends State<Function1Page> {
                 child: _image == null
                     ? Text('Vui lòng chọn hình.')
                     : GestureDetector(
-                        onTap: getImage,
+                        onTap: getImageGallery,
                         child: Container(
                           constraints: BoxConstraints(
                               // minHeight: MediaQuery.of(context).size.height / 3,
                               maxHeight:
-                                  MediaQuery.of(context).size.height / 2),
+                                  MediaQuery.of(context).size.height / 3),
                           decoration: BoxDecoration(
                             border: Border.all(),
                           ),
@@ -155,29 +174,25 @@ class _Function1PageState extends State<Function1Page> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               Html(
-                      data: bananaDetail[index],
-                      style: {
-                        "table": Style(
-                          backgroundColor:
-                              Color.fromARGB(0x50, 0xee, 0xee, 0xee),
-                        ),
-                        "tr": Style(
-                          border: Border(
-                              bottom: BorderSide(color: Colors.grey)),
-                        ),
-                        "th": Style(
-                          padding: EdgeInsets.all(6),
-                          backgroundColor: Colors.grey,
-                        ),
-                        "td": Style(
-                          padding: EdgeInsets.all(6),
-                          alignment: Alignment.topLeft,
-                        ),
-                        'h5': Style(
-                            maxLines: 2,
-                            textOverflow: TextOverflow.ellipsis),
-                      },
-                    )
+                data: bananaDetail[index],
+                style: {
+                  "table": Style(
+                    backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+                  ),
+                  "tr": Style(
+                    border: Border(bottom: BorderSide(color: Colors.grey)),
+                  ),
+                  "th": Style(
+                    padding: EdgeInsets.all(6),
+                    backgroundColor: Colors.grey,
+                  ),
+                  "td": Style(
+                    padding: EdgeInsets.all(6),
+                    alignment: Alignment.topLeft,
+                  ),
+                  'h5': Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
+                },
+              )
             ],
           ),
         ),
