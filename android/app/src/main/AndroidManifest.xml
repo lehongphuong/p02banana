@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="vn.edu.lequydon.n02banana">
    <application
-        android:label="Học Sinh NCKH"
+        android:label="Nhận diện"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -75,8 +75,8 @@ class _Function1PageState extends State<Function1Page> {
   }
 
   Future getImage() async {
-    // final pickedFile = await picker.getImage(source: ImageSource.camera);
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = File(pickedFile!.path);
